@@ -10,12 +10,45 @@
 	
 	import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
 	import IconButton from '@smui/icon-button';
+	import List, {Item, Separator, Text} from '@smui/list';
 	function doAction(action) {
     alert('You did an action: '+action);
-	}
+	};
+
+import TopAppBar, {Section, Title, Row} from '@smui/top-app-bar';
+import Menu from '@smui/menu';
+import {GroupItem} from '@smui/button';
+let dense = true;
+let menu;
 </script>
 
 <main>
+<TopAppBar variant="static" {dense}>
+  <div class="top-bar-container">
+    <Row>
+      <Section>
+        <IconButton>
+          <a href="#/"><img src="../dist/images/logo_white_fat.svg" alt="montage"></a>
+        </IconButton>
+        <Title>Montage Admin</Title>
+      </Section>
+      <Section align="end" toolbar>
+        <div use:GroupItem>
+          <Button color="secondary" on:click={() => menu.setOpen(true)}>
+            <Icon class="material-icons" aria-label="Slaporte">person</Icon>
+            <Label>Slaporte</Label>
+          </Button>
+          <Menu bind:this={menu} anchorCorner="BOTTOM_LEFT">
+            <List>
+                <Item><Text>Settings</Text></Item>
+                <Item><Text>Log out</Text></Item>
+            </List>
+          </Menu>
+        </div>
+      </Section>
+    </Row>
+  </div>
+</TopAppBar>
 	<h1>Hello {name}!</h1>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 
