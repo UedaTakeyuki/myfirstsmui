@@ -15,6 +15,154 @@ cd svelte-app
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
 
+## How did this project get started
+
+Create Svelte scaffold by degit.
+```
+degit sveltejs/template myfirstsmui
+```
+
+Install Smelte
+```
+npm install smelte
+```
+
+Add following 2 blocks to rollup.config.js
+
+```js:{7-9}
+import svelte from 'rollup-plugin-svelte';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import livereload from 'rollup-plugin-livereload';
+import { terser } from 'rollup-plugin-terser';
+
+// ↓ added for SMUI　2020.06.26 UEDA
+import postcss from 'rollup-plugin-postcss';
+// ↑ added for SMUI
+
+const production = !process.env.ROLLUP_WATCH;
+
+export default {
+	input: 'src/main.js',
+	output: {
+		sourcemap: true,
+		format: 'iife',
+		name: 'app',
+		file: 'public/build/bundle.js'
+	},
+	plugins: [
+		svelte({
+			// enable run-time checks when not in production
+			dev: !production,
+			// we'll extract any component CSS out into
+			// a separate file - better for performance
+			css: css => {
+				css.write('public/build/bundle.css');
+			}
+		}),
+
+		// If you have external dependencies installed from
+		// npm, you'll most likely need these plugins. In
+		// some cases you'll need additional configuration -
+		// consult the documentation for details:
+		// https://github.com/rollup/plugins/tree/master/packages/commonjs
+		resolve({
+			browser: true,
+			dedupe: ['svelte']
+		}),
+		commonjs(),
+		// ↓ added for SMUI　2020.06.26 UEDA
+    postcss({
+      extract: true,
+      minimize: true,
+      use: [
+        ['sass', {
+          includePaths: [
+            './theme',
+            './node_modules'
+          ]
+        }]
+      ]
+		}),
+		// ↑ added for SMUI
+		
+		// In dev mode, call `npm run start` once
+		// the bundle has been generated
+		!production && serve(),
+
+		// Watch the `public` directory and refresh the
+		// browser on changes when not in production
+		!production && livereload('public'),
+
+		// If we're building for production (npm run build
+		// instead of npm run dev), minify
+		production && terser()
+	],
+	watch: {
+		clearScreen: false
+	}
+};
+
+function serve() {
+	let started = false;
+
+	return {
+		writeBundle() {
+			if (!started) {
+				started = true;
+
+				require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+					stdio: ['ignore', 'inherit', 'inherit'],
+					shell: true
+				});
+			}
+		}
+	};
+}
+```
+
+Install Sass
+
+```bash:
+npm install sass
+```
+
+Install rollup-plugin-postcss
+
+```bash:
+npm install rollup-plugin-postcss
+```
+
+Add theme/_smui-theme.scss blank file
+
+Add following 3 lines to public/index.html
+
+```html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+
+	<title>Svelte app</title>
+
+	<link rel='icon' type='image/png' href='/favicon.png'>
+	<!-- ↓ added for SUMI 2020.06.26 UEDA-->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+	<!-- ↑ added for SUMI-->
+	
+	<link rel='stylesheet' href='/global.css'>
+	<link rel='stylesheet' href='/build/bundle.css'>
+
+	<script defer src='/build/bundle.js'></script>
+</head>
+
+<body>
+</body>
+</html>
+```
 
 ## Get started
 
