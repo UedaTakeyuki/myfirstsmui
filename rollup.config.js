@@ -4,6 +4,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 
+// ↓ added for SMUI　2020.06.26 UEDA
+import postcss from 'rollup-plugin-postcss';
+// ↑ added for SMUI
+
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -35,7 +39,21 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
-
+		// ↓ added for SMUI　2020.06.26 UEDA
+    postcss({
+      extract: true,
+      minimize: true,
+      use: [
+        ['sass', {
+          includePaths: [
+            './theme',
+            './node_modules'
+          ]
+        }]
+      ]
+		}),
+		// ↑ added for SMUI
+		
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),
