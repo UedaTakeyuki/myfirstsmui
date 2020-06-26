@@ -121,6 +121,49 @@ function serve() {
 }
 ```
 
+Install Sass
+
+```bash:
+npm install sass
+```
+
+Install rollup-plugin-postcss
+
+```bash:
+npm install rollup-plugin-postcss
+```
+
+Add theme/_smui-theme.scss blank file
+
+Add following 3 lines to public/index.html
+
+```html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+
+	<title>Svelte app</title>
+
+	<link rel='icon' type='image/png' href='/favicon.png'>
+	<!-- ↓ added for SUMI 2020.06.26 UEDA-->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+	<!-- ↑ added for SUMI-->
+	
+	<link rel='stylesheet' href='/global.css'>
+	<link rel='stylesheet' href='/build/bundle.css'>
+
+	<script defer src='/build/bundle.js'></script>
+</head>
+
+<body>
+</body>
+</html>
+```
+
 ## Get started
 
 Install the dependencies...
